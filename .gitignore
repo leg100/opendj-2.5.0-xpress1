@@ -1,0 +1,4 @@
+*.swp
+src/**/generated
+rpms/target
+build/
