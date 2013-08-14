@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.forgerock.opendj</groupId>
+    <artifactId>opendj-server</artifactId>
+    <version>2.5.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>OpenDJ Directory Server</name>
+    <description>
+        OpenDJ is a new LDAPv3 compliant directory service, developed for the Java
+        platform, providing a high performance, highly available and secure store
+        for the identities managed by enterprises.
+    </description>
+    <inceptionYear>2006</inceptionYear>
+    <profiles>
+        <profile>
+            <id>build-rpm</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <os>
+                    <family>unix</family>
+                    <name>linux</name>
+                </os>
+            </activation> 
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>rpm-maven-plugin</artifactId>
+                        <version>2.1-alpha-3</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>generate-rpm</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>rpm</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <name>opendj</name>
+                            <copyright>No Copyright</copyright>
+                            <group>Application/Collectors</group>
+                            <defaultUsername>opendj</defaultUsername>
+                            <defaultGroupname>opendj</defaultGroupname>
+                            <defaultDirmode>755</defaultDirmode>
+                            <requires>
+                                <require>jdk</require>
+                            </requires>
+                            <preinstallScriptlet>
+                                <scriptFile>pre.sh</scriptFile>
+                            </preinstallScriptlet>
+                            <postinstallScriptlet>
+                                <scriptFile>post.sh</scriptFile>
+                            </postinstallScriptlet>
+                            <preremoveScriptlet>
+                                <scriptFile>preun.sh</scriptFile>
+                            </preremoveScriptlet>
+                            <mappings>
+                                <mapping>
+                                    <directory>/usr/local/opendj</directory>
+                                    <sources>
+                                        <source>
+                                            <location>../build/package/OpenDJ-2.5.0-Xpress1</location>
+                                        </source>
+                                    </sources>
+                                </mapping>
+                            </mappings>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
